@@ -2,11 +2,9 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './Screens/LoginScreen';
-import RegisterScreen from './Screens/RegisterScreen';
 import SplashScreen from './Screens/SplashScreen';
 import OnboardingNav from './Screens/onboarding/OnboardingNav';
-
+import AuthScreenNav from './Screens/authScreens/AuthScreenNav';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,22 +22,10 @@ export default function App() {
               backgroundColor: '#f4511e',
             },
             headerTintColor: '#fff',
-            presentation:"fullScreenModal"
+            presentation: "fullScreenModal"
           }}
         />
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{
-            headerShown: false,
-            headerStyle: {
-              backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            presentation:"fullScreenModal"
-          }}
-        />
-        <Stack.Screen name="Register" component={RegisterScreen} />
+
         <Stack.Screen
           name="OnboardingNav"
           component={OnboardingNav}
@@ -49,7 +35,20 @@ export default function App() {
               backgroundColor: '#f4511e',
             },
             headerTintColor: '#fff',
-            presentation:"fullScreenModal"
+            presentation: "fullScreenModal"
+          }}
+        />
+
+        <Stack.Screen
+          name="AppAuth"
+          component={AuthScreenNav}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
           }}
         />
       </Stack.Navigator>

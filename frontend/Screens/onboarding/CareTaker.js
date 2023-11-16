@@ -43,7 +43,7 @@ const CareTaker = ({ navigation }) => {
 
             {/* next button */}
             <View className="flex justify-center items-center pt-7 px-8">
-                <TouchableOpacity onPress={() => navigation.navigate('Appointments')} className="w-full bg-blue-900 py-3 items-center rounded-lg">
+                <TouchableOpacity onPress={() => navigation.navigate('AppAuth')} className="w-full bg-blue-900 py-3 items-center rounded-lg">
                     <Text className="text-white font-light">Get Started</Text>
                 </TouchableOpacity>
             </View>

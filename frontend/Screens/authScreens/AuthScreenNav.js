@@ -3,22 +3,22 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import AuthScreenNav from '../authScreens/AuthScreenNav';
-import Doctors from './Doctors';
-import CareTaker from './CareTaker';
-import Appointments from './Appointments';
+
+import LoginScreen from './LoginScreen';
+import ForgotPasswordScreen from './ForgotPasswordScreen';
+import VerfiyCodeScreen from './VerfiyCodeScreen';
+import RegisterScreen from './RegisterScreen';
 
 const Stack = createNativeStackNavigator();
 
 
-
-const OnboardingNav = () => {
+const AuthScreenNav = ({ navigation }) => {
   return (
-    <NavigationContainer initialRouteName='Doctors' independent={true}>
+    <NavigationContainer initialRouteName='Login' independent={true}>
     <Stack.Navigator>
       <Stack.Screen
-        name="Doctors"
-        component={Doctors}
+        name="Login"
+        component={LoginScreen}
         options={{
           headerShown: false,
           headerStyle: {
@@ -29,8 +29,8 @@ const OnboardingNav = () => {
         }}
       />
       <Stack.Screen
-        name="CareTaker"
-        component={CareTaker}
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
         options={{
           headerShown: false,
           headerStyle: {
@@ -41,8 +41,8 @@ const OnboardingNav = () => {
         }}
       />
       <Stack.Screen
-        name="Appointments"
-        component={Appointments}
+        name="VerifyCode"
+        component={VerfiyCodeScreen}
         options={{
           headerShown: false,
           headerStyle: {
@@ -52,9 +52,9 @@ const OnboardingNav = () => {
           presentation:"fullScreenModal"
         }}
       />
-      <Stack.Screen
-        name="AppAuth"
-        component={AuthScreenNav}
+       <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
         options={{
           headerShown: false,
           headerStyle: {
@@ -69,4 +69,4 @@ const OnboardingNav = () => {
   )
 }
 
-export default OnboardingNav
+export default AuthScreenNav
