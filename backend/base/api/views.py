@@ -5,6 +5,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import RegisterSerializer
 from base.models import MyUser
+from rest_framework.permissions import IsAuthenticated
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
         Generates a token for the given user.
@@ -56,4 +58,27 @@ class RegisterUser(APIView):
 
 
 
+class ChangePassword(APIView):
+    """
+        Handles the POST request to change the user's password.
 
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object with a JSON message indicating the result of the password change.
+
+        Raises:
+            None
+    """
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+        old_password = request.data.get("old_password")
+        new_password = request.data.get("new_password")
+        if not user.check_password(old_password):
+            return Response({"error": "Old password is incorrect"}, status=400)
+        user.set_password(new_password)
+        user.save()
+        return Response({"message": "Password changed successfully"}, status=200)
