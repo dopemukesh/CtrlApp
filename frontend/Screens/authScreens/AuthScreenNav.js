@@ -3,7 +3,8 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-
+import PasswordSuccess from './PasswordSuccess';
+import NewPassword from './NewPassword';
 import LoginScreen from './LoginScreen';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import VerfiyCodeScreen from './VerfiyCodeScreen';
@@ -26,6 +27,30 @@ const AuthScreenNav = ({ navigation }) => {
           },
           headerTintColor: '#fff',
           presentation:"fullScreenModal"
+        }}
+      />
+      <Stack.Screen
+        name="NewPassword"
+        component={NewPassword}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f4511e',
+          },
+          headerTintColor: '#fff',
+          presentation:"fullScreenModal"
+        }}
+      />
+       <Stack.Screen
+        name="PasswordSuccess"
+        component={PasswordSuccess}
+        options={{
+          headerShown: false,
+          headerStyle: {
+            backgroundColor: '#f4511e',
+          },
+          headerTintColor: '#fff',
+          presentation:"modal"
         }}
       />
       <Stack.Screen

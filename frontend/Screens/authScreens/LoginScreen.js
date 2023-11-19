@@ -51,7 +51,7 @@ const LoginScreen = ({ navigation }) => {
                     <View className="flex items-center justify-center flex-row px-8 mx-6 space-y-2 space-x-2 border border-[#c5c0c0] rounded-lg ">
                         <Icon name="lock" size={25} color="#c5c0c0" />
                         <TextInput
-                            placeholder="Enter your Email"
+                            placeholder="Enter your Password"
                             placeholderTextColor={'#c5c0c0'}
                             className="w-[90%] p-2 py-4"
                         />

@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import SplashScreen from './Screens/SplashScreen';
 import OnboardingNav from './Screens/onboarding/OnboardingNav';
 import AuthScreenNav from './Screens/authScreens/AuthScreenNav';
+import AppScreenNav from './Screens/appScreens/AppScreenNav';
 
 const Stack = createNativeStackNavigator();
 
@@ -42,6 +43,20 @@ export default function App() {
         <Stack.Screen
           name="AppAuth"
           component={AuthScreenNav}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
+
+
+        <Stack.Screen
+          name="AppScreenNav"
+          component={AppScreenNav}
           options={{
             headerShown: false,
             headerStyle: {
