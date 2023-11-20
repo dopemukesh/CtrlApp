@@ -1,4 +1,4 @@
-import { View, Text, Dimensions, TouchableOpacity, Image, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { View, Text, Dimensions,SafeAreaView, TouchableOpacity, Image, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import Logo from '../../assets/logos/Ctrl.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -67,7 +67,7 @@ const LoginScreen = ({ navigation }) => {
 
                     {/* button to press in-order to login */}
                     <View className="flex justify-center items-center pt-7 px-8">
-                        <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} className="w-full bg-blue-900 py-3 items-center rounded-lg">
+                        <TouchableOpacity onPress={() => navigation.navigate('AppScreenNav')} className="w-full bg-blue-900 py-3 items-center rounded-lg">
                             <Text className="text-white font-light">Log in </Text>
                         </TouchableOpacity>
                     </View>
@@ -87,6 +87,7 @@ const LoginScreen = ({ navigation }) => {
                 </View>
 
             </View>
+
         </TouchableWithoutFeedback>
     )
 }

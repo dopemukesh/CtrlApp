@@ -10,6 +10,8 @@ import ForgotPasswordScreen from './ForgotPasswordScreen';
 import VerfiyCodeScreen from './VerfiyCodeScreen';
 import RegisterScreen from './RegisterScreen';
 
+import AppScreenNav from '../appScreens/AppScreenNav';
+
 const Stack = createNativeStackNavigator();
 
 
@@ -89,6 +91,18 @@ const AuthScreenNav = ({ navigation }) => {
           presentation:"fullScreenModal"
         }}
       />
+       <Stack.Screen
+          name="AppScreenNav"
+          component={AppScreenNav}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
     </Stack.Navigator>
   </NavigationContainer>
   )

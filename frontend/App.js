@@ -53,19 +53,6 @@ export default function App() {
           }}
         />
 
-
-        <Stack.Screen
-          name="AppScreenNav"
-          component={AppScreenNav}
-          options={{
-            headerShown: false,
-            headerStyle: {
-              backgroundColor: '#f4511e',
-            },
-            headerTintColor: '#fff',
-            presentation: "fullScreenModal"
-          }}
-        />
       </Stack.Navigator>
     </NavigationContainer>
   );
