@@ -2,11 +2,15 @@ import { View, Text, TouchableOpacity, Dimensions, Image } from 'react-native'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DocImage from '../../../assets/support/Doctor.jpg'
+import {useNavigation} from "@react-navigation/native";
+
 
 const DoctorList = ({ name, icon, title, distance }) => {
+    const navigation = useNavigation();
+
     return (
-        <TouchableOpacity className="flex flex-row pl-2 space-x-4 my-1 bg-white rounded-lg py-4 ">
-            <View className="">
+        <TouchableOpacity onPress={() => navigation.navigate('SingleDoctor')} className="flex flex-row my-2 bg-white py-4 px-2 rounded-lg ">
+            <View className="flex flex-row">
                 <Image
                     source={DocImage}
                     className="rounded-md"
@@ -16,23 +20,28 @@ const DoctorList = ({ name, icon, title, distance }) => {
                         width: Dimensions.get('screen').height * 0.13
                     }}
                 />
-            </View>
 
-            {/* ratings and name */}
-            <View className="flex flex-col mt-1 items-start justify-center">
-                <View className="flex flex-row justify-start items-center space-x-2">
+                <View className="flex justify-around items-start pl-2">
+                    <View className="flex flex-row space-x-1">
+                        <Text className="text-black font-bold text-sm -mr-1 ">{name}</Text>
 
-                    <Icon name="star" size={15} color="#FFDF00" />
-                    <Text className="text-center text-sm font-medium font text-black">4.8</Text>
+                        <View className="flex flex-row px-2 mr-1 justify-start items-start">
+                            <Icon name="star" size={15} color="#FFDF00" />
+                            <Text className="text-center text-sm font-medium font text-black">4.8</Text>
+                        </View>
+                    </View>
+
+                    <Text className="py-2 font-base text-light">{title}</Text>
+
+                    <View className="flex flex-row space-x-1">
+                        <Icon name="location-arrow" size={15} color="#000" />
+                        <Text className="text-sm font-medium font text-black">{distance}</Text>
+                    </View>
 
                 </View>
-                <Text numberOfLines={1} className="text-center text-sm font-bold font text-black">
-                    {name}
-                </Text>
-                <Text className="text-center text-sm font-light font text-black">
-                    {title}
-                </Text>
             </View>
+
+
         </TouchableOpacity>
     )
 }

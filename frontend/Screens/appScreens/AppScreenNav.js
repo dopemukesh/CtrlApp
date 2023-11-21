@@ -8,8 +8,8 @@ import HomeScreen from './HomeScreen';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DoctorsList from './DoctorsList';
-
-
+import SingleDoctor from './SingleDoctor';
+import SelectTIme from './SelectTIme';
 
 
 const Tab = createBottomTabNavigator();
@@ -62,6 +62,30 @@ const AppScreenNav = () => {
         <Stack.Screen
           name="PopularList"
           component={DoctorsList}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
+        <Stack.Screen
+          name="SingleDoctor"
+          component={SingleDoctor}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
+        <Stack.Screen
+          name="SelectTIme"
+          component={SelectTIme}
           options={{
             headerShown: false,
             headerStyle: {
