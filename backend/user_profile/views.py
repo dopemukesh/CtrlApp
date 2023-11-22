@@ -169,9 +169,7 @@ class EmergencyContactsAPIView(APIView):
             user = request.user
             try:
                 emergency_contacts = EmergencyContacts.objects.filter(user=user)
-                print(emergency_contacts)
                 serializer = EmergencyContactsSerializer(emergency_contacts, many=True)
-                print(serializer.data)
                 return Response(serializer.data, status=status.HTTP_200_OK)
 
             except:
@@ -211,3 +209,30 @@ class EmergencyContactsAPIView(APIView):
 
 
 
+class SeeUserEmergencyContacts(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, user_id):
+        """
+            Retrieves the emergency contacts associated with the authenticated user.
+
+            Parameters:
+                request (Request): The HTTP request object.
+
+            Returns:
+                Response: The response object containing the serialized emergency contacts data.
+
+            Raises:
+                KeyError: If the user is not authenticated.
+                Http404: If the user or the emergency contacts are not found.
+        """
+        try:
+            user = MyUser.objects.get(id=user_id)
+            try:
+                emergency_contacts = EmergencyContacts.objects.filter(user=user)
+                serializer = EmergencyContactsSerializer(emergency_contacts, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            except:
+                return Response({"error": "Emergency contacts not found"}, status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
