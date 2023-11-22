@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AvailabilityTimeTable, Doctor, Appointment, MedicalRecords
+from .models import AvailabilityTimeTable, Doctor, Appointment, Prescriptions
 
 
 @admin.register(AvailabilityTimeTable)
@@ -31,8 +31,8 @@ class AppointmentAdmin(admin.ModelAdmin):
     ordering = ('doctor', 'patient', 'date')
 
 
-@admin.register(MedicalRecords)
-class MedicalRecordsAdmin(admin.ModelAdmin):
+@admin.register(Prescriptions)
+class PrescriptionsAdmin(admin.ModelAdmin):
     list_display = ('doctor', 'patient', 'date')
     list_filter = ('doctor', 'patient', 'date')
     search_fields = ('doctor', 'patient', 'date')

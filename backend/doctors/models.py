@@ -58,7 +58,7 @@ class Diagnosis(models.Model):
 
 
 
-class MedicalRecords(models.Model):
+class Prescriptions(models.Model):
     doctor = models.ForeignKey('Doctor', on_delete=models.CASCADE, related_name='medical_records')
     patient = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='medical_records')
     diagnosis = models.ForeignKey(Diagnosis, on_delete=models.CASCADE, related_name='medical_records')

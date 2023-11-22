@@ -5,7 +5,7 @@ from .models import Profile, EmergencyContacts
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('user','gender', 'contact_number', 'street_address', 'city', 'state')
+    list_display = ('user' ,'fullname', 'date_of_birth','gender')
     list_filter = ('date_of_birth', 'gender', 'contact_number', 'street_address', 'city', 'state')
     search_fields = ('date_of_birth', 'gender', 'contact_number', 'street_address', 'city', 'state', )
     ordering = ('date_of_birth', 'gender', 'contact_number','street_address', 'city','state')

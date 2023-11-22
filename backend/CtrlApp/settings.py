@@ -37,13 +37,14 @@ INSTALLED_APPS = [
     'base.apps.BaseConfig',
     'user_profile.apps.UserProfileConfig',
     'doctors.apps.DoctorsConfig',
+    'medicalRecords.apps.MedicalrecordsConfig',
 
     # 3rd party
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',
     'corsheaders',
     'drf_yasg',
-        'cloudinary',
+    'cloudinary',
 
 ]
 
@@ -209,3 +210,14 @@ cloudinary.config(
     api_key=config("CLOUDINARY_API_KEY"),
     api_secret=config("CLOUDINARY_API_SECRET")
 )
+
+# swagger
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header'
+        }
+    }
+}
