@@ -54,6 +54,13 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
 
 
 class EmergencyContactsSerializer(serializers.ModelSerializer):
+    user = MyUserSerializer()
     class Meta:
         model = EmergencyContacts
         fields = '__all__'
+
+class CreateEmergencyContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmergencyContacts
+        fields = ('fullname','relationship','contact_number','street_address','city','state','zip_code','country')
+

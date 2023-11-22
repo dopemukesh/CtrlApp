@@ -3,7 +3,10 @@ from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
-from .serializers import ProfileSerializer, EmergencyContactsSerializer, UpdateProfileSerializer
+from .serializers import (
+    ProfileSerializer, EmergencyContactsSerializer, UpdateProfileSerializer,
+    CreateEmergencyContactSerializer
+    )
 from .models import Profile, EmergencyContacts
 
 
@@ -143,3 +146,68 @@ class GetUserProfile(APIView):
         except:
             # Return an error response if the user is not found
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class EmergencyContactsAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """
+            Retrieves the emergency contacts associated with the authenticated user.
+
+            Parameters:
+                request (Request): The HTTP request object.
+
+            Returns:
+                Response: The response object containing the serialized emergency contacts data.
+
+            Raises:
+                KeyError: If the user is not authenticated.
+                Http404: If the user or the emergency contacts are not found.
+        """
+        try:
+            user = request.user
+            try:
+                emergency_contacts = EmergencyContacts.objects.filter(user=user)
+                print(emergency_contacts)
+                serializer = EmergencyContactsSerializer(emergency_contacts, many=True)
+                print(serializer.data)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+            except:
+                return Response({"error": "Emergency contacts not found"}, status=status.HTTP_404_NOT_FOUND)
+        except:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        def post(self, request):
+            """
+                Creates a new emergency contact for the authenticated user.
+
+                Parameters:
+                    request (Request): The HTTP request object.
+
+                Returns:
+                    Response: The response object containing the serialized emergency contact data.
+
+                Raises:
+                    KeyError: If the user is not authenticated.
+                    Http404: If the user or the emergency contact is not found.
+            """
+            try:
+                user = request.user
+                try:
+                   serializer = CreateEmergencyContactSerializer(user, data=request.data, partial=True)
+
+                   if serializer.is_valid():
+                       serializer.save()
+                       return Response(serializer.data, status=status.HTTP_201_CREATED)
+                   else:
+                       return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+                except:
+                    return Response({"error": "Emergency contact not found"}, status=status.HTTP_404_NOT_FOUND)
+            except:
+                return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+
