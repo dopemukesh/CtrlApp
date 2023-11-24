@@ -236,3 +236,4 @@ class SeeUserEmergencyContacts(APIView):
                 return Response({"error": "Emergency contacts not found"}, status=status.HTTP_404_NOT_FOUND)
         except:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
