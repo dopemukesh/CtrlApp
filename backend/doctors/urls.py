@@ -3,5 +3,6 @@ from .views import *
 
 
 urlpatterns = [
-    path('doctor/', DoctorAPIView.as_view()),
+    path('', DoctorAPIView.as_view()),
+    path('<int:doctor_id>/', GetDoctorDetails.as_view()),
 ]

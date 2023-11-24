@@ -21,8 +21,36 @@ class DoctorAPIView(APIView):
             JsonResponse: The profile data of the user if found, or an error message if not found.
         """
         try:
-            doctors = Doctor.objects.all()
+            doctors = Doctor.objects.filter(approved=True)
+            print(doctors)
             serializer = DoctorSerializer(doctors, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetDoctorDetails(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, doctor_id):
+        """
+            Retrieves a specific doctor object and serializes it using the DoctorSerializer.
+
+            Args:
+                request (Request): The HTTP request object.
+                doctor_id (int): The ID of the doctor to retrieve.
+
+            Returns:
+                Response: The serialized doctor object if found, or an error message if not found.
+
+            Raises:
+                Exception: If there is an error retrieving the doctor object.
+        """
+        try:
+            doctor = Doctor.objects.get(id=doctor_id)
+            serializer = DoctorSerializer(doctor)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
