@@ -2,7 +2,7 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Doctor
+from .models import Doctor, AvailabilityTimeTable,Appointment
 from rest_framework.views import APIView
 from .serializers import DoctorSerializer
 from base.models import MyUser
@@ -53,4 +53,22 @@ class GetDoctorDetails(APIView):
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
+
+
+class BookAppointment(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, doctor_id, appointment_time):
+        try:
+            patient = request.user
+            try:
+                doctor = Doctor.objects.get(id=doctor_id)
+                appointment_time = appointment_time
+
+            except Exception as e:
+                return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 

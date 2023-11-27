@@ -9,7 +9,6 @@ class AvailabilityTimeTableAdmin(admin.ModelAdmin):
     search_fields = ('doctor', 'date')
     ordering = ('doctor', 'date')
     list_editable = ('start_time', 'end_time')
-    readonly_fields = ('start_time', 'end_time')
     fields = ('doctor', 'date','start_time', 'end_time')
     date_hierarchy = 'date'
     ordering = ('doctor', 'date')
