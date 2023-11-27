@@ -121,5 +121,5 @@ if __name__ == "__main__":
     import random
     from base.models import MyUser
     from user_profile.models import Profile, EmergencyContacts
-    from doctors.models import Doctor, AvailabilityTimeTable
+    from doctors.models import Doctor, AvailabilityTimeTable, Appointment
     main()

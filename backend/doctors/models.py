@@ -15,7 +15,7 @@ class AvailabilityTimeTable(models.Model):
     def __str__(self):
         return f"{self.doctor} - {self.date} - {self.start_time} - {self.end_time} - Available: {self.is_available}"
 
-    
+
 class Doctor(models.Model):
     user = models.OneToOneField(MyUser, on_delete=models.CASCADE)
     license_info = CloudinaryField('image', blank=True)
@@ -36,16 +36,16 @@ class Doctor(models.Model):
 
 class Appointment(models.Model):
     doctor = models.ForeignKey(Doctor, on_delete=models.CASCADE, related_name='appointments')
-    patient = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='appointments')
+    patient = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='appointments')
     date = models.ForeignKey(AvailabilityTimeTable, related_name='appointments', on_delete=models.CASCADE)
     additional_info = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.doctor.user.fullname} - {self.patient.user.fullname} - {self.date}"
+        return f"{self.doctor}"
 
 class Diagnosis(models.Model):
     doctor = models.ForeignKey('Doctor', on_delete=models.CASCADE, related_name='diagnosis')
-    patient = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='diagnosis')
+    patient = models.ForeignKey(MyUser, on_delete=models.CASCADE, related_name='diagnosis')
     date = models.name = models.ForeignKey(AvailabilityTimeTable, related_name='diagnosis', on_delete=models.CASCADE)
     symptoms = models.CharField(max_length=255)
     diagnosis = models.CharField(max_length=255)
@@ -54,7 +54,7 @@ class Diagnosis(models.Model):
     additional_info = models.TextField(blank=True)
 
     def __str__(self):
-        return self.doctor.user.fullname + " - " + self.patient.user.fullname + " - " + str(self.date)
+        return self.doctor
 
 
 

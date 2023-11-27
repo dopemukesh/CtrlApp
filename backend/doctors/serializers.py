@@ -3,11 +3,11 @@ from .models import *
 from base.models import MyUser
 from user_profile.serializers import MyUserSerializer
 
-
 class DoctorSerializer(serializers.ModelSerializer):
     user = MyUserSerializer()
     license_info = serializers.SerializerMethodField()
     profile_image = serializers.SerializerMethodField()
+
 
     def get_profile_image(self, obj):
         """
@@ -47,11 +47,13 @@ class AppointmentDateSerializer(serializers.ModelSerializer):
 
 
 
+
 class AvailabilityTimeTableSerializer(serializers.ModelSerializer):
-    Doctor = DoctorSerializer()
     class Meta:
         model = AvailabilityTimeTable
-        fields = '__all__'
+        fields = ('id', 'start_time', 'end_time', 'is_available')
+
+
 
 
 class AppointmentSerializer(serializers.ModelSerializer):

@@ -6,7 +6,6 @@ from .models import AvailabilityTimeTable, Doctor, Appointment, Prescriptions
 class AvailabilityTimeTableAdmin(admin.ModelAdmin):
     list_display = ('doctor', 'date', 'start_time', 'end_time')
     list_filter = ('doctor', 'date')
-    search_fields = ('doctor', 'date')
     ordering = ('doctor', 'date')
     list_editable = ('start_time', 'end_time')
     fields = ('doctor', 'date','start_time', 'end_time')
