@@ -1,5 +1,5 @@
 # CtrlApp
-The Ctrl App (hereafter referred to as "Ctrl") is a groundbreaking healthcare platform designed to revolutionise healthcare access and delivery throughout Africa. Ctrl is envisioned as a comprehensive and user-centric application that seamlessly combines innovative technology with healthcare services, addressing the critical challenges faced by the African healthcare sector.
+The Ctrl App (hereafter referred to as "Ctrl") is a groundbreaking healthcare platform designed to revolutionize healthcare access and delivery throughout Africa. Ctrl is envisioned as a comprehensive and user-centric application that seamlessly combines innovative technology with healthcare services, addressing the critical challenges faced by the African healthcare sector.
 
 
 ## Getting Started
@@ -40,7 +40,7 @@ Make sure you have the following installed on your machine:
     ```
         pip install -r requirements.txt
     ```
-6. Run A database migration to create the tables and a light wight sqlite3 database
+6. Run A database migration to create the tables and a light weight sqlite3 database
     ```
         python manage.py makemigrations
         python manage.py migrate
