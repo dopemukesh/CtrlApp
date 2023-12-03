@@ -1,5 +1,5 @@
 import { View, Text, Dimensions, Image } from 'react-native'
-import React,{useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Logo from '../assets/logos/Ctrl.png'
 
 
@@ -15,7 +15,7 @@ const SplashScreen = ({ navigation }) => {
 
 
     return (
-       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <View style={{ width: logoSize, height: logoSize }}>
                 <Image source={Logo} style={{ flex: 1, width: undefined, height: undefined }} resizeMode="contain" />
             </View>

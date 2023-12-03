@@ -3,7 +3,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import AuthScreenNav from '../authScreens/AuthScreenNav';
+import AppNav from '../../AppNavigation/AppNav';
 import Doctors from './Doctors';
 import CareTaker from './CareTaker';
 import Appointments from './Appointments';
@@ -15,57 +15,57 @@ const Stack = createNativeStackNavigator();
 const OnboardingNav = () => {
   return (
     <NavigationContainer initialRouteName='Doctors' independent={true}>
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Doctors"
-        component={Doctors}
-        options={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: '#f4511e',
-          },
-          headerTintColor: '#fff',
-          presentation:"fullScreenModal"
-        }}
-      />
-      <Stack.Screen
-        name="CareTaker"
-        component={CareTaker}
-        options={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: '#f4511e',
-          },
-          headerTintColor: '#fff',
-          presentation:"fullScreenModal"
-        }}
-      />
-      <Stack.Screen
-        name="Appointments"
-        component={Appointments}
-        options={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: '#f4511e',
-          },
-          headerTintColor: '#fff',
-          presentation:"fullScreenModal"
-        }}
-      />
-      <Stack.Screen
-        name="AppAuth"
-        component={AuthScreenNav}
-        options={{
-          headerShown: false,
-          headerStyle: {
-            backgroundColor: '#f4511e',
-          },
-          headerTintColor: '#fff',
-          presentation:"fullScreenModal"
-        }}
-      />
-    </Stack.Navigator>
-  </NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Doctors"
+          component={Doctors}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
+        <Stack.Screen
+          name="CareTaker"
+          component={CareTaker}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
+        <Stack.Screen
+          name="Appointments"
+          component={Appointments}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
+        <Stack.Screen
+          name="AppNav"
+          component={AppNav}
+          options={{
+            headerShown: false,
+            headerStyle: {
+              backgroundColor: '#f4511e',
+            },
+            headerTintColor: '#fff',
+            presentation: "fullScreenModal"
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   )
 }
 

@@ -1,20 +1,21 @@
 import { View, Text, StatusBar, TouchableOpacity, Image, Dimensions } from 'react-native'
 import React from 'react'
 import caretaker from '../../assets/support/caretaker.jpg'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
 const DottedLine = () => (
-  <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} className="space-x-[2px]">
-      <View style={{ width: 5, height: 5, borderRadius: 50, backgroundColor: 'blue' }} />
-      <View style={{ width: 5, height: 5, borderRadius: 50, backgroundColor: 'blue' }} />
-      <View style={{ width: 15, height: 5, borderRadius: 50, backgroundColor: 'blue' }} />
-  </View>
+    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }} className="space-x-[2px]">
+        <View style={{ width: 5, height: 5, borderRadius: 50, backgroundColor: 'blue' }} />
+        <View style={{ width: 5, height: 5, borderRadius: 50, backgroundColor: 'blue' }} />
+        <View style={{ width: 15, height: 5, borderRadius: 50, backgroundColor: 'blue' }} />
+    </View>
 );
 
 const CareTaker = ({ navigation }) => {
-  return (
-    <View className="flex flex-1 bg-[#dadada]">
+    return (
+        <View className="flex flex-1 bg-[#dadada]">
             {/* first half of the page */}
             <View className="flex justify-center items-center">
                 <Image
@@ -43,14 +44,14 @@ const CareTaker = ({ navigation }) => {
 
             {/* next button */}
             <View className="flex justify-center items-center pt-7 px-8">
-                <TouchableOpacity onPress={() => navigation.navigate('AppAuth')} className="w-full bg-blue-900 py-3 items-center rounded-lg">
+                <TouchableOpacity onPress={() => navigation.navigate('AppNav')} className="w-full bg-blue-900 py-3 items-center rounded-lg">
                     <Text className="text-white font-light">Get Started</Text>
                 </TouchableOpacity>
             </View>
             {/* end of next button */}
 
         </View>
-  )
+    )
 }
 
 export default CareTaker
