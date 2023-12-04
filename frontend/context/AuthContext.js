@@ -4,7 +4,7 @@ import * as SecureStore from 'expo-secure-store';
 
 
 const TOKEN_KEY = 'token';
-export const API_URL = 'http://127.0.0.1:8000/';
+export const API_URL = 'https://kaybrian4.pythonanywhere.com/';
 const AuthContext = createContext();
 
 export const useAuth = () => {
