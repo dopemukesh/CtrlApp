@@ -1,9 +1,10 @@
 import { useState, useEffect, useContext, createContext } from "react";
 import axios from 'axios';
 import * as SecureStore from 'expo-secure-store';
+import { jwtDecode } from "jwt-decode";
 
 
-const TOKEN_KEY = 'token';
+
 export const API_URL = 'https://kaybrian4.pythonanywhere.com/';
 const AuthContext = createContext();
 
@@ -11,32 +12,60 @@ export const useAuth = () => {
     return useContext(AuthContext);
 }
 
+const checkTokenExpiration = async (token) => {
+   const response = await axios.post(`${API_URL}user/verify-token/`, {
+       refresh: token,
+   });
+   console.log(response.data)
+};
+
+
+
 export const AuthProvider = ({ children }) => {
     const [AuthState, setAuthState] = useState({
         token: null,
-        authenticated:null,
+        authenticated: null,
     })
 
     // once the app starts up, check if there is a token
     useEffect(() => {
         const bootstrapAsync = async () => {
-            let token = await SecureStore.getItemAsync(TOKEN_KEY);
-            console.log("Stored Token: ", token)
-            if (token) {
-                // set the token in the http header
-                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+            let accessToken = await SecureStore.getItemAsync('accessToken');
+            let refreshToken = await SecureStore.getItemAsync('refreshToken');
 
-                // if there is a token set the authenticated to true
+            if (accessToken) {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
                 setAuthState({
-                    token: token,
-                    authenticated:true,
-                })
+                    token: accessToken,
+                    authenticated: true,
+                });
+
+                // Check if the access token is expired
+                const isTokenExpired = await checkTokenExpiration(accessToken);
+                if (isTokenExpired) {
+                    // Access token is expired, try to refresh
+                    try {
+                        const refreshResponse = await axios.post(`${API_URL}user/login/refresh/`, {
+                            refresh: refreshToken,
+                        });
+                        const newAccessToken = refreshResponse.data.access;
+                        await SecureStore.setItemAsync('accessToken', newAccessToken);
+                        setAuthState({
+                            token: newAccessToken,
+                            authenticated: true,
+                        });
+                        axios.defaults.headers.common['Authorization'] = `Bearer ${newAccessToken}`;
+                    } catch (refreshError) {
+                        // Refresh token is also expired, perform logout
+                        await logout();
+                    }
+                }
             }
-        }
+        };
         bootstrapAsync();
     }, [])
 
-    const register = async (name, email,date_of_birth, password) => {
+    const register = async (name, email, date_of_birth, password) => {
         try {
             const response = await axios.post(`${API_URL}user/register/`, {
                 fullname: name,
@@ -59,13 +88,17 @@ export const AuthProvider = ({ children }) => {
             });
             const data = response.data
 
+            // set the access and refresh tokens
+            await SecureStore.setItemAsync('accessToken', data.access);
+            await SecureStore.setItemAsync('refreshToken', data.refresh);
+
             // set the token and authenticated to true
             setAuthState({
                 token: data.access,
-                authenticated:true,
-            })
+                authenticated: true,
+            });
+
             axios.defaults.headers.common['Authorization'] = `Bearer ${data.access}`;
-            await SecureStore.setItemAsync(TOKEN_KEY, data.access);
         } catch (error) {
             return error
         }
@@ -73,7 +106,7 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         // delete the token from the local storage
-        await SecureStore.deleteItemAsync(TOKEN_KEY);
+        await SecureStore.deleteItemAsync(accessToken);
 
         // update the http headers of axios
         axios.defaults.headers.common['Authorization'] = ""
@@ -82,7 +115,7 @@ export const AuthProvider = ({ children }) => {
         // set the token to null
         setAuthState({
             token: null,
-            authenticated:false,
+            authenticated: false,
         })
     }
 
