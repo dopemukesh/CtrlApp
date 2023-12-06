@@ -7,6 +7,7 @@ from .serializers import RegisterSerializer
 from base.models import MyUser
 from rest_framework.permissions import IsAuthenticated
 
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     """
         Generates a token for the given user.
@@ -88,7 +89,6 @@ class TokenVerificationView(TokenVerifyView):
     """
     Custom view to verify the validity of a token.
     """
-
     def post(self, request, *args, **kwargs):
         response = super().post(request, *args, **kwargs)
 

@@ -6,6 +6,7 @@ from rest_framework_simplejwt.views import (
 )
 
 
+
 urlpatterns = [
     path("", views.IndexView.as_view(), name="index"),
     path('verify-token/', views.TokenVerificationView.as_view(), name='token-verification'),
