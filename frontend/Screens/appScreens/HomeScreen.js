@@ -1,11 +1,33 @@
-import { View, Text, Dimensions, SafeAreaView, ScrollView, TouchableOpacity, Image, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import React from 'react'
+import { View, Text, Dimensions, SafeAreaView, FlatList, ScrollView, TouchableOpacity, Image, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import Logo from '../../assets/logos/Ctrl.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import { API_URL } from '../../context/AuthContext';
 import ServiceCard from './Components/ServiceCard';
 import DoctorsCard from './Components/Doctors';
+import axios from 'axios';
+
+
+
+
 const HomeScreen = ({ navigation }) => {
+
+  const [doctors, setDoctors] = useState([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}doctors/`);
+        setDoctors(response.data)
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, [])
+
+
+
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -93,19 +115,15 @@ const HomeScreen = ({ navigation }) => {
           </View>
 
           <View className="">
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              className="space-x-3"
-            >
-              <DoctorsCard name="Kayongo Johnson" title="Doctor" />
-              <DoctorsCard name="Kayongo Johnson" title="Nurse" />
-              <DoctorsCard name="Kayongo Johnson" title="Drug" />
-              <DoctorsCard name="Kayongo Johnson" title="Dental" />
-              <DoctorsCard name="Kayongo Johnson" title="Skin" />
-              <DoctorsCard name="Kayongo Johnson" title="Hospital" />
-              <DoctorsCard name="Kayongo Johnson" title="Care" />
-            </ScrollView>
+          <FlatList
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            data={doctors}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <DoctorsCard name={item.user.fullname} title={item.specialization} />
+            )}
+          />
           </View>
         </View>
 

@@ -13,11 +13,24 @@ export const useAuth = () => {
 }
 
 const checkTokenExpiration = async (token) => {
-   const response = await axios.post(`${API_URL}user/verify-token/`, {
-       refresh: token,
-   });
-   console.log(response.data)
+    const response = await fetch(`${API_URL}user/verify-token/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            token: token,
+        }),
+    });
+    if (response.status === 200) {
+        // Token is valid
+        return true;
+    } else {
+        // Token verification failed
+        return false;
+    }
 };
+
 
 
 
@@ -35,6 +48,7 @@ export const AuthProvider = ({ children }) => {
 
             if (accessToken) {
                 axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
                 setAuthState({
                     token: accessToken,
                     authenticated: true,
@@ -49,6 +63,7 @@ export const AuthProvider = ({ children }) => {
                             refresh: refreshToken,
                         });
                         const newAccessToken = refreshResponse.data.access;
+                        console.log(newAccessToken);
                         await SecureStore.setItemAsync('accessToken', newAccessToken);
                         setAuthState({
                             token: newAccessToken,
@@ -106,7 +121,8 @@ export const AuthProvider = ({ children }) => {
 
     const logout = async () => {
         // delete the token from the local storage
-        await SecureStore.deleteItemAsync(accessToken);
+        await SecureStore.deleteItemAsync('accessToken');
+        await SecureStore.deleteItemAsync('refreshToken');
 
         // update the http headers of axios
         axios.defaults.headers.common['Authorization'] = ""
