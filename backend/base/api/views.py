@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
 from .serializers import RegisterSerializer
 from base.models import MyUser
 from rest_framework.permissions import IsAuthenticated
@@ -82,3 +82,23 @@ class ChangePassword(APIView):
         user.set_password(new_password)
         user.save()
         return Response({"message": "Password changed successfully"}, status=200)
+
+
+class TokenVerificationView(TokenVerifyView):
+    """
+    Custom view to verify the validity of a token.
+    """
+
+    def post(self, request, *args, **kwargs):
+        response = super().post(request, *args, **kwargs)
+
+        # Check the response status to determine token validity
+        if response.status_code == 200:
+            # Token is valid
+            return Response({"message": True})
+        elif response.status_code == 401:
+            # Token is invalid or has expired
+            return Response({"message": False}, status=401)
+        else:
+            # Handle other response statuses if needed
+            return response
