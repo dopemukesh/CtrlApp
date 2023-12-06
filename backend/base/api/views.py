@@ -95,10 +95,13 @@ class TokenVerificationView(TokenVerifyView):
         # Check the response status to determine token validity
         if response.status_code == 200:
             # Token is valid
-            return Response({"message": True})
+            return Response({"message": True}, status=200)
         elif response.status_code == 401:
             # Token is invalid or has expired
+            print("token is expired")
             return Response({"message": False}, status=401)
+
         else:
             # Handle other response statuses if needed
-            return response
+            print("token is expired")
+            return Response({"message": False}, status=401)
