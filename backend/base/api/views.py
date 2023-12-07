@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenVerifyView
-from .serializers import RegisterSerializer
+from .serializers import RegisterSerializer, MyUserSerializer
 from base.models import MyUser
 from rest_framework.permissions import IsAuthenticated
 
@@ -98,10 +98,31 @@ class TokenVerificationView(TokenVerifyView):
             return Response({"message": True}, status=200)
         elif response.status_code == 401:
             # Token is invalid or has expired
-            print("token is expired")
             return Response({"message": False}, status=401)
-
         else:
             # Handle other response statuses if needed
-            print("token is expired")
             return Response({"message": False}, status=401)
+
+
+
+class GetUserInfo(APIView):
+    """
+        Handles the GET request to retrieve the user's information.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object with the user's information.
+
+        Raises:
+            None
+    """
+    permission_classes = [IsAuthenticated]
+    def get(self, request):
+        try:
+            user = request.user
+            serializer = MyUserSerializer(user)
+            return Response(serializer.data)
+        except:
+            return Response({"error": "User not found"}, status=404)
