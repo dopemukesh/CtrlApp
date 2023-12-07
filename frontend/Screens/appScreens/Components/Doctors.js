@@ -3,14 +3,14 @@ import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DocImage from '../../../assets/support/Doctor.jpg'
 
-const DoctorsCard = ({ name, icon, title }) => {
+const DoctorsCard = ({ name, profile_image, title }) => {
     return (
         <>
             <StatusBar barStyle="dark-content" />
             <TouchableOpacity className="flex mt-2 pr-3">
                 <View className="flex items-center rounded-full justify-center">
                     <Image
-                        source={DocImage}
+                        source={profile_image ? { uri: profile_image } : {uri: `https://fakeimg.pl/350x200/?text=${name}`}}
                         className="rounded-md "
                         style={{
                             resizeMode: 'cover',

@@ -39,7 +39,9 @@ const DATA = [
 
 
 
-const DoctorsList = ({ navigation }) => {
+const DoctorsList = ({ navigation, route }) => {
+
+    const { doctors } = route.params;
 
     const dismissKeyboard = () => {
         Keyboard.dismiss();
@@ -66,10 +68,10 @@ const DoctorsList = ({ navigation }) => {
                 <View className="px-5">
 
                     <FlatList
-                        data={DATA}
+                        data={doctors}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => <DoctorList name={item.name} title={item.title} distance={item.distance} />}
-                        keyExtractor={item => item.id}
+                        renderItem={({ item }) => <DoctorList name={item.user.fullname} title={item.specialization} distance={item.distance} />}
+                        keyExtractor={item => item.id.toString()}
                     />
                 </View>
             </SafeAreaView>

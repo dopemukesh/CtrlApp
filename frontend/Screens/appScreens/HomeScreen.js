@@ -13,6 +13,7 @@ import axios from 'axios';
 const HomeScreen = ({ navigation }) => {
 
   const [doctors, setDoctors] = useState([])
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,6 +24,19 @@ const HomeScreen = ({ navigation }) => {
         console.error(error);
       }
     };
+
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get(`${API_URL}user/`);
+        console.log(response.data)
+        setUser(response.data)
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+
+    fetchUser()
     fetchData();
   }, [])
 
@@ -39,7 +53,8 @@ const HomeScreen = ({ navigation }) => {
 
         {/* Intro welcome message  */}
         <View className="flex flex-row items-center justify-between px-4 py-3">
-          <Text className="text-center text-sm font-medium text-gray-800">Hi, John 👋!</Text>
+          <Text className="text-center text-sm font-medium text-gray-800">Hi,
+            {user?.fullname?.split(' ')[0]} 👋</Text>
           <Image
             source={Logo}
             className="w-full rounded-lg"
@@ -109,21 +124,21 @@ const HomeScreen = ({ navigation }) => {
             <Text className="text-start text-xl font-bold font text-black">
               Popular Doctors
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate('PopularList')} className="">
+            <TouchableOpacity onPress={() => navigation.navigate('PopularList', { doctors })} className="">
               <Text className="text-blue-900 text-medium font-bold">See all</Text>
             </TouchableOpacity>
           </View>
 
           <View className="">
-          <FlatList
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            data={doctors}
-            keyExtractor={(item) => item.id.toString()}
-            renderItem={({ item }) => (
-              <DoctorsCard name={item.user.fullname} title={item.specialization} />
-            )}
-          />
+            <FlatList
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={doctors}
+              keyExtractor={(item) => item.id.toString()}
+              renderItem={({ item }) => (
+                <DoctorsCard name={item.user.fullname} profile_image={item.profile_image} title={item.specialization} />
+              )}
+            />
           </View>
         </View>
 

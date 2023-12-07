@@ -85,7 +85,7 @@ def create_doctors(user):
             state=fake.state(),
             zip_code=fake.zipcode(),
             country=fake.country(),
-            profile_image=fake.image_url(),
+            profile_image='https://fakeimg.pl/100x100/',
             experience=fake.text(),
             approved=True
         )
