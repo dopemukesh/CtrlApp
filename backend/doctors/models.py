@@ -5,9 +5,19 @@ from user_profile.models import Profile
 from django.contrib.auth.models import Permission
 
 
+
+class SelectedTime(models.Model):
+    availability = models.ForeignKey('AvailabilityTimeTable', on_delete=models.CASCADE, related_name='selected_times')
+    selected_time = models.TimeField(auto_now=False, auto_now_add=False)
+
+    def __str__(self):
+        return f"{self.availability} - Selected Time: {self.selected_time}"
+
+
 class AvailabilityTimeTable(models.Model):
     doctor = models.ForeignKey('Doctor', on_delete=models.CASCADE, related_name='availability_timetables')
     date = models.DateField()
+    selected_time=models.TimeField(auto_now=False, auto_now_add=False)
     start_time = models.TimeField(auto_now=False, auto_now_add=False)
     end_time = models.TimeField(auto_now=False, auto_now_add=False)
     is_available = models.BooleanField(default=True)  # New field to track availability

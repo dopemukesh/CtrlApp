@@ -41,17 +41,25 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 
 class AppointmentDateSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Appointment
         fields = ("date", "additional_info")
 
 
+class SelectedTimeASerializers(serializers.ModelSerializer):
+    availability =  AppointmentDateSerializer()
+    class Meta:
+        model = SelectedTime
+        fields = '__all__'
 
 
 class AvailabilityTimeTableSerializer(serializers.ModelSerializer):
     class Meta:
         model = AvailabilityTimeTable
         fields = ('id','date', 'start_time', 'end_time', 'is_available')
+
+
 
 class AppointmentSerializer(serializers.ModelSerializer):
     doctor = DoctorSerializer()
