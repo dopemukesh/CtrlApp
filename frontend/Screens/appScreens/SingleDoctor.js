@@ -2,8 +2,30 @@ import { View, Text, Dimensions, SafeAreaView, FlatList, TouchableOpacity, Scrol
 import React, { useCallback, useState, useEffect } from 'react'
 import Logo from '../../assets/support/caretaker.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import axios from 'axios';
+import { API_URL } from '../../context/AuthContext';
 
-const SingleDoctor = ({ navigation }) => {
+
+const SingleDoctor = ({ navigation, route }) => {
+    const [docData, setDocData] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(null);
+    const [selectedTime, setSelectedTime] = useState(null);
+
+
+    const { id } = route.params;
+
+    useEffect(() => {
+        const fetchDoctorData = async () => {
+            try {
+                const response = await axios.get(`${API_URL}doctors/${id}/`);
+                setDocData(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchDoctorData();
+    }, [])
+
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
@@ -12,19 +34,30 @@ const SingleDoctor = ({ navigation }) => {
         navigation.goBack();
     }, [navigation]);
 
-    const dates = [
-        { "id": 1, "date": "2023-11-20" },
-        { "id": 2, "date": "2023-11-21" },
-        { "id": 3, "date": "2023-11-22" },
-        { "id": 4, "date": "2023-11-23" },
-        { "id": 5, "date": "2023-11-24" },
-        { "id": 6, "date": "2023-11-25" },
-        { "id": 7, "date": "2023-11-26" },
-        { "id": 8, "date": "2023-11-27" },
-        { "id": 9, "date": "2023-11-28" },
-        { "id": 10, "date": "2023-11-29" },
-        { "id": 11, "date": "2023-11-30" }
-    ]
+    const availableTimes = docData?.availability?.filter(timeSlot => timeSlot.is_available)
+        .map(timeSlot => ({
+            id: timeSlot.id,
+            time: timeSlot.start_time
+        }));
+
+    const availableDates = docData?.doctor?.availability?.filter(dateSlot => dateSlot.is_available)
+        .map(dateSlot => ({
+            id: dateSlot.id,
+            date: timeSlot.date
+        }));
+
+    const availableHourlySlots = docData?.availability?.filter(
+        timeSlot => timeSlot.is_available && timeSlot.date === selectedDate
+    );
+
+    const handleDateSelection = (date) => {
+        setSelectedDate(date);
+        setSelectedTime(null);
+    };
+
+    const handleTimeSelection = (time) => {
+        setSelectedTime(time);
+    };
 
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
@@ -54,8 +87,8 @@ const SingleDoctor = ({ navigation }) => {
 
                 <View className="mx-6 pb-4 my-3 border-b border-gray-200 flex flex-row justify-between items-center">
                     <View className="space-y-2">
-                        <Text className="font-bold text-base ">Kayongo Johnson Brian</Text>
-                        <Text>Cardiology</Text>
+                        <Text className="font-bold text-base ">{docData?.doctor?.user?.fullname} </Text>
+                        <Text>{docData?.doctor?.specialization}  </Text>
                     </View>
                     <View className="flex flex-row px-2 mr-1 justify-start items-start">
                         <Icon name="star" size={15} color="#FFDF00" />
@@ -68,55 +101,62 @@ const SingleDoctor = ({ navigation }) => {
                         Descriptions
                     </Text>
                     <Text numberOfLines={4} className="text-sm text-clip ">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.sed do eiusmod tempor incididunt ut labore et dolore.
+                        {docData?.doctor?.experience}
                     </Text>
-
-                </View>
-
-                <View className="mx-6 pb-2 my-1">
-                    <Text className="font-bold text-base ">
-                        Select Date
-                    </Text>
-
-                    <FlatList
-                        data={dates}
-                        keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity className="bg-[#fdf8f8] py-4 mt-3 px-6 flex  mr-4 rounded-md">
-                                <Text className="text-black text-lg font-bold">20</Text>
-                                <Text className="text-black text-medium font-normal">Sun</Text>
-                            </TouchableOpacity>
-                        )}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                    />
 
                 </View>
 
                 <View className="mx-6 pb-4 my-1">
-                    <Text className="font-bold text-base ">
+                    <Text className="font-bold text-base">
                         Select Date
                     </Text>
-
                     <FlatList
-                        data={dates}
+                        data={availableDates}
                         keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
-                            <TouchableOpacity className="bg-[#fdf8f8] py-2 mt-1 px-6 flex  mr-4 rounded-md">
-                                <Text className="text-black text-lg font-base">08:00 AM</Text>
+                            <TouchableOpacity
+                                onPress={() => handleDateSelection(item.date)}
+                                style={{ backgroundColor: selectedDate === item.date ? '#2196F3' : '#fdf8f8' }}
+                                className="py-4 mt-3 px-6 flex  mr-4 rounded-md"
+                            >
+                                <Text className={`text-${selectedDate === item.date ? 'white' : 'black'} text-lg font-bold`}>{item.date}</Text>
                             </TouchableOpacity>
                         )}
                         horizontal
                         showsHorizontalScrollIndicator={false}
                     />
+                </View>
 
+                <View className="mx-6 pb-4 my-1">
+                    <Text className="font-bold text-base">
+                        Select Time
+                    </Text>
+                    <FlatList
+                        data={availableHourlySlots}
+                        keyExtractor={(item) => item.id.toString()}
+                        renderItem={({ item }) => (
+                            <TouchableOpacity
+                                onPress={() => handleTimeSelection(item.start_time)}
+                                style={{ backgroundColor: selectedTime === item.start_time ? '#2196F3' : '#fdf8f8' }}
+                                className="py-2 mt-1 px-6 flex  mr-4 rounded-md"
+                            >
+                                <Text className={`text-${selectedTime === item.start_time ? 'white' : 'black'} text-lg font-base`}>{item.start_time}</Text>
+                            </TouchableOpacity>
+                        )}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
                 </View>
                 <View className="flex flex-row  mx-6">
                     <TouchableOpacity className="bg-white border border-blue-900  py-2 mt-1 px-6 flex  mr-4 rounded-md">
                         <Text className="text-blue-900 text-base font-normal">Send Message</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('SelectTIme')} className="bg-blue-900 py-2 mt-1 px-3 flex  mr-7 rounded-md">
-                        <Text className="text-white bg-blue-900 text-base font-bold">Book Appointment</Text>
+                    <TouchableOpacity
+                        disabled={!selectedDate || !selectedTime}
+                        onPress={() => navigation.navigate('SelectTIme')}
+                        className={`bg-${selectedDate && selectedTime ? 'blue-900' : 'gray-400'} py-2 mt-1 px-3 flex  mr-7 rounded-md`}
+                    >
+                        <Text className={`text-white bg-${selectedDate && selectedTime ? 'blue-900' : 'gray-400'} text-base font-bold`}>Book Appointment</Text>
                     </TouchableOpacity>
                 </View>
 

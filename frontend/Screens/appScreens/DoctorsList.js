@@ -4,40 +4,6 @@ import Logo from '../../assets/logos/Ctrl.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DoctorList from './Components/DoctorList';
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        name: 'Kayongo Johnson Brian ',
-        title: 'First Item',
-        distance: "2.5km",
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        name: 'Kayongo Johnson Brian ',
-        title: 'Second Item',
-        distance: "2.5km",
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        name: 'Kayongo Johnson Brian ',
-        title: 'Third Item',
-        distance: "2.5km",
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29dd72',
-        name: 'Kayongo Johnson Brian ',
-        title: 'Third Item',
-        distance: "2.5km",
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d7s2',
-        name: 'Kayongo Johnson Brian ',
-        title: 'Third Item',
-        distance: "2.5km",
-    },
-];
-
-
 
 const DoctorsList = ({ navigation, route }) => {
 
@@ -70,7 +36,7 @@ const DoctorsList = ({ navigation, route }) => {
                     <FlatList
                         data={doctors}
                         showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => <DoctorList name={item.user.fullname} title={item.specialization} distance={item.distance} />}
+                        renderItem={({ item }) => <DoctorList name={item.user.fullname} id={item.id} title={item.specialization} profile_image={item.profile_image} distance={item.city} />}
                         keyExtractor={item => item.id.toString()}
                     />
                 </View>
