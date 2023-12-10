@@ -2,7 +2,8 @@ from django.contrib import admin
 from .models import AvailabilityTimeTable, Doctor, Appointment, Prescriptions, SelectedTime
 
 
-@admin.register(SelectedTime)
+admin.site.register(SelectedTime)
+
 
 @admin.register(AvailabilityTimeTable)
 class AvailabilityTimeTableAdmin(admin.ModelAdmin):

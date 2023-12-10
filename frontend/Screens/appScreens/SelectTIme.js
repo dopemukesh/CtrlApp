@@ -1,34 +1,14 @@
 import { View, Text, Dimensions, SafeAreaView, FlatList, TouchableOpacity, Image, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native'
-import React, { useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import Logo from '../../assets/logos/Ctrl.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DoctorList from './Components/DoctorList';
 import SelectSlot from './Components/SelectSlot';
 
 
-const DATA = [
-    {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        name: 'Kayongo Johnson Brian ',
-        title: 'First Item',
-        distance: "2.5km",
-    },
-    {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        name: 'Kayongo Johnson Brian ',
-        title: 'Second Item',
-        distance: "2.5km",
-    },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        name: 'Kayongo Johnson Brian ',
-        title: 'Third Item',
-        distance: "2.5km",
-    },
-];
-
-
-const SelectTIme = ({ navigation }) => {
+const SelectTIme = ({ navigation, route }) => {
+    const { selectedDate, selectedTime, docData, selectedAvailabilityId } = route.params;
+    const [isChecked, setChecked] = useState(false);
 
     const dismissKeyboard = () => {
         Keyboard.dismiss();
@@ -37,6 +17,14 @@ const SelectTIme = ({ navigation }) => {
     const navigateBack = useCallback(() => {
         navigation.goBack();
     }, [navigation]);
+
+    console.log(selectedTime)
+
+    const handleBookings = async () => {
+        const response = await axios.post(`${API_URL}doctors/${docData?.doctor?.id}/book-appointment/${selectedAvailabilityId}/`, {
+            user_time: selectedTime,
+        })
+    }
 
 
     return (
@@ -48,21 +36,65 @@ const SelectTIme = ({ navigation }) => {
                         <TouchableOpacity onPress={() => navigateBack()}>
                             <Icon name="angle-left" size={25} className="" color="#000" />
                         </TouchableOpacity>
-                        <Text className="font-bold text-xl">Select Time slot</Text>
+                        <Text className="font-bold text-xl">Confirm Booking Details</Text>
                         <Text></Text>
                     </View>
                 </View>
-                <View className="px-5">
 
-                    <FlatList
-                        data={DATA}
-                        showsVerticalScrollIndicator={false}
-                        renderItem={({ item }) => <SelectSlot name={item.name} title={item.title} distance={item.distance} />}
-                        keyExtractor={item => item.id}
+                <View className="px-5">
+                    <DoctorList
+                        name={docData?.doctor?.user?.fullname}
+                        profile_image={docData?.doctor?.profile_image}
+                        title={docData?.doctor?.specialization}
+                        distance={docData?.doctor?.city}
+                        bgColor="bg-blue-900"
+                    />
+
+                </View>
+
+                <View className="px-5">
+                    <SelectSlot
+                        selectedDate={selectedDate}
+                        selectedTime={selectedTime}
+                        doc={docData}
+                        isChecked={isChecked}
+                        setChecked={setChecked}
                     />
                 </View>
-                <TouchableOpacity className="bg-blue-900 absolute bottom-10 px-5 py-3 w-[90%] mx-[5%] flex flex-row justify-center rounded-md">
-                    <Text className="text-white text-sm font-bold ">Done</Text>
+
+                <View className="flex p-3 bg-white my-2 space-x-1 space-y-2 mt-2 rounded-lg mx-5 px-3">
+                    <View className="flex flex-row items-center justify-between">
+                        <View className="flex items-start justify-between">
+                            <Text className="font-bold text-base">Appointment Cost</Text>
+                            <Text className="font-light text-sm">Appointment fee for 1 Hour </Text>
+                        </View>
+                        <Text className="font-bold text-base">RWF. 20,000</Text>
+                    </View>
+
+                    <View className="flex flex-row items-center justify-between">
+                        <View className="flex items-start justify-between">
+                            <Text className="font-bold text-base">Admin Fee</Text>
+                            <Text className="font-light text-sm">Processing Fee</Text>
+                        </View>
+                        <Text className="font-bold text-base">RWF. 1500</Text>
+                    </View>
+                    <View className="flex flex-row items-center justify-between">
+                        <View className="flex items-start justify-between">
+                            <Text className="font-bold text-base">Total Fee</Text>
+                            <Text className="font-light text-sm">Total Booking fee</Text>
+                        </View>
+                        <Text className="font-bold text-base">RWF. 20,1500</Text>
+                    </View>
+                </View>
+
+
+                <TouchableOpacity
+                    className={`absolute bottom-10 px-5 py-3 w-[90%] mx-[5%] flex flex-row justify-center rounded-md ${!isChecked ? 'bg-gray-400' : 'bg-blue-900'
+                        }`}
+                    disabled={!isChecked}
+                    onPress={handleBookings}
+                >
+                    <Text className={`text-${!isChecked ? 'black' : 'white'} text-sm font-bold`}>Done</Text>
                 </TouchableOpacity>
             </SafeAreaView>
         </TouchableWithoutFeedback>

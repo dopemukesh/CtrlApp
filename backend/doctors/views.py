@@ -2,14 +2,16 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Doctor, AvailabilityTimeTable,Appointment
+from .models import Doctor, AvailabilityTimeTable,Appointment, SelectedTime
 from rest_framework.views import APIView
 from .serializers import (
     DoctorSerializer, AvailabilityTimeTableSerializer,AppointmentSerializer
     )
 from base.models import MyUser
 from user_profile.models import Profile
+from datetime import datetime, time
 import json
+from django.utils import timezone
 
 class DoctorAPIView(APIView):
     permission_classes = [IsAuthenticated]
@@ -89,7 +91,11 @@ class BookAppointment(APIView):
             doctor = Doctor.objects.get(id=doctor_id)
             appointment_date = AvailabilityTimeTable.objects.get(id=appointment_id)
             appointment_patient = request.user
-            additional_info = data.get('additional_info')
+            user_time_str = data.get('user_time')
+            datetime_obj = datetime.strptime(user_time_str, '%I:%M %p')
+            selected_time = datetime_obj.time()
+
+
 
             try:
                 appointment_book = Appointment.objects.create(
@@ -100,8 +106,13 @@ class BookAppointment(APIView):
                 )
 
                 appointment_book.save()
-                appointment_date.is_available = False
+                appointment_date.is_available = True
                 appointment_date.save()
+                add_selected_date = SelectedTime.objects.create(
+                    availability=appointment_date,
+                    selected_time=additional_info
+                )
+                add_selected_date.save()
                 serializer = AppointmentSerializer(appointment_book)
                 return Response(serializer.data, status=status.HTTP_200_OK)
             except Exception as e:
@@ -255,7 +266,7 @@ class checkSingleAppointment(APIView):
 
             except Exception as e:
                 return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
-            
+
         except Exception as e:
                 return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 

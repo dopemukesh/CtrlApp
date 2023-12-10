@@ -4,13 +4,17 @@ import Logo from '../../assets/support/caretaker.jpg';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import axios from 'axios';
 import { API_URL } from '../../context/AuthContext';
-
+import Moment from 'react-moment';
+import moment from 'moment';
 
 const SingleDoctor = ({ navigation, route }) => {
     const [docData, setDocData] = useState([]);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
-
+    const [selectedAvailability, setSelectedAvailability] = useState({
+        id: null,
+        date: null,
+    });
 
     const { id } = route.params;
 
@@ -34,25 +38,39 @@ const SingleDoctor = ({ navigation, route }) => {
         navigation.goBack();
     }, [navigation]);
 
-    const availableTimes = docData?.availability?.filter(timeSlot => timeSlot.is_available)
-        .map(timeSlot => ({
-            id: timeSlot.id,
-            time: timeSlot.start_time
-        }));
 
-    const availableDates = docData?.doctor?.availability?.filter(dateSlot => dateSlot.is_available)
+
+    const generateHourlySlots = (startTime, endTime) => {
+        const hourlySlots = [];
+        let currentHour = moment(startTime, 'HH:mm:ss');
+
+        while (currentHour.isBefore(moment(endTime, 'HH:mm:ss'))) {
+            hourlySlots.push(currentHour.format('LT'));
+            currentHour.add(1, 'hour');
+        }
+
+        return hourlySlots;
+    };
+
+
+    const availableDates = docData?.availability?.filter(dateSlot => dateSlot.is_available)
         .map(dateSlot => ({
             id: dateSlot.id,
-            date: timeSlot.date
+            date: dateSlot.date
         }));
 
-    const availableHourlySlots = docData?.availability?.filter(
-        timeSlot => timeSlot.is_available && timeSlot.date === selectedDate
-    );
+    const availableHourlySlots = selectedDate
+        ? generateHourlySlots(docData?.availability[0]?.start_time, docData?.availability[0]?.end_time)
+        : [];
 
-    const handleDateSelection = (date) => {
+
+    const handleDateSelection = (date, availabilityId) => {
         setSelectedDate(date);
         setSelectedTime(null);
+        setSelectedAvailability({
+            id: availabilityId,
+            date: date,
+        });
     };
 
     const handleTimeSelection = (time) => {
@@ -113,15 +131,22 @@ const SingleDoctor = ({ navigation, route }) => {
                     <FlatList
                         data={availableDates}
                         keyExtractor={(item) => item.id.toString()}
-                        renderItem={({ item }) => (
-                            <TouchableOpacity
-                                onPress={() => handleDateSelection(item.date)}
-                                style={{ backgroundColor: selectedDate === item.date ? '#2196F3' : '#fdf8f8' }}
-                                className="py-4 mt-3 px-6 flex  mr-4 rounded-md"
-                            >
-                                <Text className={`text-${selectedDate === item.date ? 'white' : 'black'} text-lg font-bold`}>{item.date}</Text>
-                            </TouchableOpacity>
-                        )}
+                        renderItem={({ item }) => {
+                            const formattedDate = moment(item.date).format("D");
+                            const formattedDay = moment(item.date).format("ddd");
+                            return (
+                                <TouchableOpacity
+                                    onPress={() => handleDateSelection(item.date, item.id)} // Pass the availability id here
+                                    style={{ backgroundColor: selectedDate === item.date ? 'rgb(30,58,138)' : '#fdf8f8' }}
+                                    className="py-4 mt-3 px-4 flex mr-4 rounded-md "
+                                >
+                                    <View className="space-y-1 flex justify-center items-center">
+                                        <Text className={`text-${selectedDate === item.date ? 'white' : 'black'} text-sm font-bold`}>{formattedDate}</Text>
+                                        <Text className={`text-${selectedDate === item.date ? 'white' : 'black'} text-sm font-bold`}>{formattedDay}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            );
+                        }}
                         horizontal
                         showsHorizontalScrollIndicator={false}
                     />
@@ -132,15 +157,16 @@ const SingleDoctor = ({ navigation, route }) => {
                         Select Time
                     </Text>
                     <FlatList
+                        removeClippedSubviews={true}
                         data={availableHourlySlots}
-                        keyExtractor={(item) => item.id.toString()}
+                        keyExtractor={(item) => item}
                         renderItem={({ item }) => (
                             <TouchableOpacity
-                                onPress={() => handleTimeSelection(item.start_time)}
-                                style={{ backgroundColor: selectedTime === item.start_time ? '#2196F3' : '#fdf8f8' }}
+                                onPress={() => handleTimeSelection(item)}
+                                style={{ backgroundColor: selectedTime === item ? 'rgb(30,58,138)' : '#fdf8f8' }}
                                 className="py-2 mt-1 px-6 flex  mr-4 rounded-md"
                             >
-                                <Text className={`text-${selectedTime === item.start_time ? 'white' : 'black'} text-lg font-base`}>{item.start_time}</Text>
+                                <Text className={`text-${selectedTime === item ? 'white' : 'black'} text-lg font-base`}>{item}</Text>
                             </TouchableOpacity>
                         )}
                         horizontal
@@ -153,7 +179,12 @@ const SingleDoctor = ({ navigation, route }) => {
                     </TouchableOpacity>
                     <TouchableOpacity
                         disabled={!selectedDate || !selectedTime}
-                        onPress={() => navigation.navigate('SelectTIme')}
+                        onPress={() => navigation.navigate('SelectTIme', {
+                            selectedDate: selectedDate,
+                            selectedTime: selectedTime,
+                            docData: docData,
+                            selectedAvailabilityId: selectedAvailability.id,
+                        })}
                         className={`bg-${selectedDate && selectedTime ? 'blue-900' : 'gray-400'} py-2 mt-1 px-3 flex  mr-7 rounded-md`}
                     >
                         <Text className={`text-white bg-${selectedDate && selectedTime ? 'blue-900' : 'gray-400'} text-base font-bold`}>Book Appointment</Text>
