@@ -16,6 +16,8 @@ import SelectTIme from '../Screens/appScreens/SelectTIme';
 import BookingSuccess from '../Screens/appScreens/BookingSuccess';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
+import DiagnosisDetails from '../Screens/appScreens/DiagnosisDetails';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -174,6 +176,18 @@ const AppScreens = () => {
                         },
                         headerTintColor: '#fff',
                         presentation: "fullScreenModal"
+                    }}
+                />
+                <Stack.Screen
+                    name="DiagnosisDetails"
+                    component={DiagnosisDetails}
+                    options={{
+                        headerShown: false,
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        presentation: "modal"
                     }}
                 />
                 <Stack.Screen

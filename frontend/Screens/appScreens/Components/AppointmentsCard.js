@@ -41,7 +41,7 @@ const AppointmentsCard = ({ navigation, item }) => {
           </>
         ) : (
           <TouchableOpacity className="bg-[#d3d3d3] px-10 py-2 rounded">
-            <Text className="text-sm font-base text-black">Cancel</Text>
+            <Text className="text-sm font-light text-black">Cancel</Text>
           </TouchableOpacity>
         )}
       </View>
