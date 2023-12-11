@@ -64,7 +64,7 @@ class Diagnosis(models.Model):
     additional_info = models.TextField(blank=True)
 
     def __str__(self):
-        return self.doctor
+        return f'{self.doctor.user.fullname} - {self.patient.fullname} - {self.date.date}'
 
 
 

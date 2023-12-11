@@ -2,10 +2,11 @@ from django.shortcuts import render
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from .models import Doctor, AvailabilityTimeTable,Appointment, SelectedTime
+from .models import Doctor, AvailabilityTimeTable,Appointment, SelectedTime, Diagnosis
 from rest_framework.views import APIView
 from .serializers import (
-    DoctorSerializer, AvailabilityTimeTableSerializer,AppointmentSerializer
+    DoctorSerializer, AvailabilityTimeTableSerializer,AppointmentSerializer,
+    DiagnosisSerializer, SelectedTimeASerializers
     )
 from base.models import MyUser
 from user_profile.models import Profile
@@ -269,4 +270,29 @@ class checkSingleAppointment(APIView):
 
         except Exception as e:
                 return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetDiagnosis(APIView):
+    
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """
+        Get the diagnosis records for a specific patient.
+
+        Parameters:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The response object containing the serialized diagnosis data or an error message.
+        """
+        patient = request.user
+
+        try:
+            diagnosis = Diagnosis.objects.select_related('doctor').filter(patient=patient)
+            serializer = DiagnosisSerializer(diagnosis, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 

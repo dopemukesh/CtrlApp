@@ -15,7 +15,7 @@ const AppointmentsCard = ({ navigation, item }) => {
         <View>
           <Image
             source={{
-              uri: `https://randomuser.me/api/portraits/men/${item?.id}.jpg`
+              uri: `https://randomuser.me/api/portraits/men/${item?.doctor?.id}.jpg`
             }}
             className="w-20 h-20 rounded-lg"
           />
