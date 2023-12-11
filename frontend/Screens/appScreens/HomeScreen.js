@@ -40,8 +40,6 @@ const HomeScreen = ({ navigation }) => {
     fetchData();
   }, [])
 
-
-
   const dismissKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -136,7 +134,12 @@ const HomeScreen = ({ navigation }) => {
               data={doctors}
               keyExtractor={(item) => item.id.toString()}
               renderItem={({ item }) => (
-                <DoctorsCard name={item.user.fullname} profile_image={item.profile_image} title={item.specialization} />
+                <DoctorsCard
+                  name={item.user.fullname}
+                  id={item.id}
+                  profile_image={item.profile_image}
+                  title={item.specialization}
+                />
               )}
             />
           </View>

@@ -1,12 +1,10 @@
 import { View, Text, Dimensions, SafeAreaView, FlatList, StatusBar, ScrollView, TouchableOpacity, Image, TextInput, Keyboard, TouchableWithoutFeedback } from 'react-native'
 import React, { useEffect, useState, useCallback } from 'react'
-import Logo from '../../assets/logos/Ctrl.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { API_URL } from '../../context/AuthContext';
-import ServiceCard from './Components/ServiceCard';
-import DoctorsCard from './Components/Doctors';
 import axios from 'axios';
 import AppointmentsCard from './Components/AppointmentsCard';
+import moment from 'moment';
 
 
 const Appointments = ({ navigation }) => {
@@ -32,6 +30,11 @@ const Appointments = ({ navigation }) => {
 
     getUserAppointments();
   }, []);
+
+  const filteredAppointments = activeTab === 'upcoming'
+    ? appointments.filter(appointment => moment(appointment.date.date).isAfter(moment()))
+    : appointments.filter(appointment => moment(appointment.date.date).isBefore(moment()));
+
 
   const navigateBack = useCallback(() => {
     navigation.goBack();
@@ -68,12 +71,12 @@ const Appointments = ({ navigation }) => {
         <View className="mb-4">
 
           <FlatList
-              data={appointments}
-              removeClippedSubviews={true}
-              showsVerticalScrollIndicator={false}
-              renderItem={({ item }) => <AppointmentsCard item={item}  />}
-              keyExtractor={item => item.id.toString()}
-            />
+            data={filteredAppointments}
+            removeClippedSubviews={true}
+            showsVerticalScrollIndicator={false}
+            renderItem={({ item }) => <AppointmentsCard item={item} />}
+            keyExtractor={item => item.id.toString()}
+          />
         </View>
       </View>
     </SafeAreaView>

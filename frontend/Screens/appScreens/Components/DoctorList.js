@@ -12,7 +12,9 @@ const DoctorList = ({ name, profile_image, title,id, distance, bgColor }) => {
         <TouchableOpacity onPress={() => navigation.navigate('SingleDoctor', {id})} className={`flex flex-row my-2 py-4 px-2 rounded-lg ${bgColor? bgColor : 'bg-white'} `}>
             <View className="flex flex-row">
                 <Image
-                    source={DocImage}
+                    source={{
+                        uri: `https://randomuser.me/api/portraits/men/${id}.jpg`
+                    }}
 
                     className="rounded-md"
                     style={{

@@ -85,8 +85,9 @@ const SingleDoctor = ({ navigation, route }) => {
             >
 
                 <ImageBackground
-                    source={Logo}
-                    className=""
+                    source={{
+                        uri: `https://randomuser.me/api/portraits/men/${id}.jpg`
+                    }}
                     style={{
                         resizeMode: 'cover',
                         height: Dimensions.get('screen').height * 0.35,
@@ -96,9 +97,9 @@ const SingleDoctor = ({ navigation, route }) => {
                     <View className="flex px-6 mt-9 space-y-3">
                         <View className="mt-2 py-3 flex flex-row items-center justify-between">
                             <TouchableOpacity onPress={() => navigateBack()}>
-                                <Icon name="angle-left" size={25} className="" color="#000" />
+                                <Icon name="angle-left" size={25} className="" color="#fff" />
                             </TouchableOpacity>
-                            <Icon name="ellipsis-v" size={25} className="" color="#000" />
+                            <Icon name="ellipsis-v" size={25} className="" color="#fff" />
                         </View>
                     </View>
                 </ImageBackground>

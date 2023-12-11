@@ -2,16 +2,20 @@ import { View, Text, TouchableOpacity, StatusBar, Dimensions, Image } from 'reac
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DocImage from '../../../assets/support/Doctor.jpg'
+import { useNavigation } from "@react-navigation/native";
 
-const DoctorsCard = ({ name, profile_image, title }) => {
+const DoctorsCard = ({ name, profile_image, title, id }) => {
+    const navigation = useNavigation();
+
     return (
         <>
             <StatusBar barStyle="dark-content" />
             <TouchableOpacity className="flex mt-2 pr-3">
                 <View className="flex items-center rounded-full justify-center">
                     <Image
-                        source={profile_image ? { uri: profile_image } : {uri: `https://fakeimg.pl/350x200/?text=${name}`}}
-                        className="rounded-md "
+                        source={{
+                            uri: `https://randomuser.me/api/portraits/men/${id}.jpg`
+                        }} className="rounded-md "
                         style={{
                             resizeMode: 'cover',
                             height: Dimensions.get('screen').height * 0.17,
