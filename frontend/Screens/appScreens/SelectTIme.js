@@ -18,8 +18,6 @@ const SelectTIme = ({ navigation, route }) => {
         navigation.goBack();
     }, [navigation]);
 
-    console.log(selectedTime)
-
     const handleBookings = async () => {
         const response = await axios.post(`${API_URL}doctors/${docData?.doctor?.id}/book-appointment/${selectedAvailabilityId}/`, {
             user_time: selectedTime,

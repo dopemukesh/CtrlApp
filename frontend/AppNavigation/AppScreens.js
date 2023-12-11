@@ -8,7 +8,7 @@ import DiagnosisScreen from '../Screens/appScreens/DiagnosisScreen';
 import ProfileScreen from '../Screens/appScreens/ProfileScreen';
 import MessagesScreen from '../Screens/appScreens/MessagesScreen';
 import Appointments from '../Screens/appScreens/AppointmentsScreen';
-
+import BookingSuccess from '../Screens/appScreens/BookingSuccess';
 
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -161,6 +161,18 @@ const AppScreens = () => {
                 <Stack.Screen
                     name="SelectTIme"
                     component={SelectTIme}
+                    options={{
+                        headerShown: false,
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        presentation: "fullScreenModal"
+                    }}
+                />
+                <Stack.Screen
+                    name="BookingSuccess"
+                    component={BookingSuccess}
                     options={{
                         headerShown: false,
                         headerStyle: {

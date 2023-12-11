@@ -96,13 +96,13 @@ class BookAppointment(APIView):
             selected_time = datetime_obj.time()
 
 
-
+            print(selected_time)
             try:
                 appointment_book = Appointment.objects.create(
                     doctor=doctor,
                     patient=appointment_patient,
                     date=appointment_date,
-                    additional_info=additional_info
+                    additional_info=f"{selected_time} is the time to add the appointment"
                 )
 
                 appointment_book.save()
@@ -110,7 +110,7 @@ class BookAppointment(APIView):
                 appointment_date.save()
                 add_selected_date = SelectedTime.objects.create(
                     availability=appointment_date,
-                    selected_time=additional_info
+                    selected_time=selected_time
                 )
                 add_selected_date.save()
                 serializer = AppointmentSerializer(appointment_book)
