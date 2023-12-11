@@ -64,9 +64,10 @@ class AvailabilityTimeTableSerializer(serializers.ModelSerializer):
 class AppointmentSerializer(serializers.ModelSerializer):
     doctor = DoctorSerializer()
     patient = MyUserSerializer()
+    date = AvailabilityTimeTableSerializer()
     class Meta:
         model = Appointment
-        fields = '__all__'
+        fields = "__all__"
 
 class DiagnosisSerializer(serializers.ModelSerializer):
     doctor = DoctorSerializer()

@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
                 // Check if the access token is expired
                 const isTokenExpired = await checkTokenExpiration(accessToken);
-                if (isTokenExpired) {
+                if (!isTokenExpired) {
                     // Access token is expired, try to refresh
                     try {
                         const refreshResponse = await axios.post(`${API_URL}user/login/refresh/`, {

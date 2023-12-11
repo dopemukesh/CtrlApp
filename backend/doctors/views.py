@@ -164,7 +164,7 @@ class GetPatientAppointments(APIView):
         """
         try:
             patient = request.user
-            appointments = Appointment.objects.filter(patient=patient)
+            appointments = Appointment.objects.select_related('doctor').filter(patient=patient)
             serializer = AppointmentSerializer(appointments, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:

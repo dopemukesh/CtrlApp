@@ -4,7 +4,8 @@ import Logo from '../../assets/logos/Ctrl.png';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import DoctorList from './Components/DoctorList';
 import SelectSlot from './Components/SelectSlot';
-
+import axios from 'axios';
+import { API_URL } from '../../context/AuthContext';
 
 const SelectTIme = ({ navigation, route }) => {
     const { selectedDate, selectedTime, docData, selectedAvailabilityId } = route.params;
@@ -22,6 +23,13 @@ const SelectTIme = ({ navigation, route }) => {
         const response = await axios.post(`${API_URL}doctors/${docData?.doctor?.id}/book-appointment/${selectedAvailabilityId}/`, {
             user_time: selectedTime,
         })
+
+        if (response.status === 200) {
+            navigation.navigate('BookingSuccess', { doc: docData })
+        } else {
+            // Handle error
+            console.log(response.data);
+        }
     }
 
 

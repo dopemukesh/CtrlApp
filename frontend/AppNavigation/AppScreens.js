@@ -1,29 +1,35 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Icon from 'react-native-vector-icons/FontAwesome';
+
 import HomeScreen from '../Screens/appScreens/HomeScreen';
 import DiagnosisScreen from '../Screens/appScreens/DiagnosisScreen';
 import ProfileScreen from '../Screens/appScreens/ProfileScreen';
 import MessagesScreen from '../Screens/appScreens/MessagesScreen';
 import Appointments from '../Screens/appScreens/AppointmentsScreen';
-import BookingSuccess from '../Screens/appScreens/BookingSuccess';
-
-
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import DoctorsList from '../Screens/appScreens/DoctorsList';
 import SingleDoctor from '../Screens/appScreens/SingleDoctor';
 import SelectTIme from '../Screens/appScreens/SelectTIme';
-
+import BookingSuccess from '../Screens/appScreens/BookingSuccess';
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 
-
 export const TabNav = () => {
+  const route = useRoute();
+  const focusedRoute = getFocusedRouteNameFromRoute(route) ?? 'HomeScreen';
+
+  const getTabBarIconColor = (routeName) => {
+    return focusedRoute === routeName ? 'rgb(30,58,138)' : 'rgb(211, 211, 211)';
+  };
+
+
   return (
     <Tab.Navigator>
       <Tab.Screen
@@ -32,7 +38,7 @@ export const TabNav = () => {
 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={20} color={`rgb(211, 211, 211)`} />
+            <Icon name="home" size={20} color={getTabBarIconColor('HomeScreen')} />
           ),
           headerShown: false,
           tabBarLabel: '',
@@ -49,7 +55,7 @@ export const TabNav = () => {
 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={20} color={`rgb(30 58 138)`} />
+            <Icon name="book" size={20} color={getTabBarIconColor('Appointments')} />
           ),
           headerShown: false,
           tabBarLabel: '',
@@ -66,7 +72,7 @@ export const TabNav = () => {
 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={20} color={`rgb(30 58 138)`} />
+            <Icon name="thermometer-4" size={20} color={getTabBarIconColor('DiagnosisScreen')} />
           ),
           headerShown: false,
           tabBarLabel: '',
@@ -83,7 +89,7 @@ export const TabNav = () => {
 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={20} color={`rgb(30 58 138)`} />
+            <Icon name="envelope-open-o" size={20} color={getTabBarIconColor('MessagesScreen')} />
           ),
           headerShown: false,
           tabBarLabel: '',
@@ -100,7 +106,7 @@ export const TabNav = () => {
 
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Icon name="home" size={20} color={`rgb(30 58 138)`} />
+            <Icon name="user-o" size={20} color={getTabBarIconColor('ProfileScreen')} />
           ),
           headerShown: false,
           tabBarLabel: '',
@@ -179,7 +185,7 @@ const AppScreens = () => {
                             backgroundColor: '#f4511e',
                         },
                         headerTintColor: '#fff',
-                        presentation: "fullScreenModal"
+                        presentation: "modal"
                     }}
                 />
             </Stack.Navigator>
