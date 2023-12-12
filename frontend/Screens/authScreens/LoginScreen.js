@@ -23,9 +23,7 @@ const LoginScreen = ({ navigation }) => {
     // on login
     const handleLogin = async (values) => {
         try {
-            console.log('Login values:', values);
             const result = await onLogin(values.email, values.password);
-            console.log(result); // Log the result for debugging
 
             if (result && result.error) {
                 setError('Something went wrong with your login');
