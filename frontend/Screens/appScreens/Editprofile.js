@@ -15,7 +15,7 @@ const Editprofile = () => {
     const [height, setHeight] = useState(40); // Initial height
     const [isGenderModalVisible, setGenderModalVisible] = useState(false);
     const [isBloodTypeModalVisible, setBloodTypeModalVisible] = useState(false);
-
+    const [userDataUpdate, setUserDataUpdate] = useState(false);
 
     const dismissKeyboard = () => {
         Keyboard.dismiss();
@@ -37,7 +37,7 @@ const Editprofile = () => {
             }
         };
         fetchData();
-    }, []);
+    }, [userDataUpdate]);
 
 
     const navigateBack = useCallback(() => {
@@ -50,7 +50,9 @@ const Editprofile = () => {
             const response = await axios.put(`${API_URL}profile/`, editedProfile);
             if (response.status === 200) {
                 console.log('Profile updated successfully');
-            }else{
+                setUserDataUpdate(true);
+                navigation.goBack();
+            } else {
                 console.log('Profile update failed');
             }
             console.log('Updating profile', editedProfile)
@@ -124,11 +126,11 @@ const Editprofile = () => {
                         <TextInput
                             placeholder="Enter Name"
                             className="w-full h-12 px-4 border border-gray-200 rounded-lg"
-                            value={editedProfile?.fullname}
+                            value={editedProfile?.user?.fullname}
                             onChangeText={(text) =>
                                 setEditedProfile((prevProfile) => ({
                                     ...prevProfile,
-                                    fullname: text,
+                                    user: { ...prevProfile.user, fullname: text },
                                 }))
                             }
                         />
