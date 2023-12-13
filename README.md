@@ -67,3 +67,7 @@ Make sure you have the following installed on your machine:
         npm run start:tunnel
     ```
 4. The expo code will appear that you need to scan for the application to install on your phone
+
+
+
+Application apk is [here](https://expo.dev/artifacts/eas/daZj6ZQML63ZaV1VGwR1Mu.apk)
