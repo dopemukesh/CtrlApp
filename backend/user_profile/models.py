@@ -8,7 +8,7 @@ class Profile(models.Model):
     fullname = models.CharField(max_length=255)
     date_of_birth = models.DateField()
     gender = models.CharField(max_length=10, null=True)
-    contact_number = models.CharField(max_length=10, null=True)
+    contact_number = models.CharField(max_length=15, null=True)
     street_address = models.CharField(max_length=255, null=True)
     city = models.CharField(max_length=255, null=True)
     state = models.CharField(max_length=255, null=True)

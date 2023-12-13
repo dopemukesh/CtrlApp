@@ -46,7 +46,7 @@ const ProfileScreen = ({ navigation }) => {
         <View className="flex px-5 space-y-0">
 
           <View className="mt-2 py-3 flex flex-row items-center justify-between">
-            <TouchableOpacity className=" items-center justify-center border border-gray-100 rounded-full py-2 px-4">
+            <TouchableOpacity onPress={() => navigateBack()} className=" items-center justify-center border border-gray-100 rounded-full py-2 px-4">
               <Icon name="angle-left" size={25} className="" color="#000" />
             </TouchableOpacity>
             <Text className="font-bold text-xl">Profile </Text>
@@ -66,7 +66,7 @@ const ProfileScreen = ({ navigation }) => {
         </View>
 
         <View className="flex px-4 space-y-2">
-          <ProfileComponent name="Profile" icon="user-o" screen="Profile" />
+          <ProfileComponent name="Profile" icon="user-o" onTapFunc="Editprofile" screen="Profile" />
           <ProfileComponent name="Payment Methods" icon="briefcase" screen="Profile" />
           <ProfileComponent name="Favorite" icon="gratipay" screen="Profile" />
           <ProfileComponent name="Settings" icon="cog" screen="Profile" />

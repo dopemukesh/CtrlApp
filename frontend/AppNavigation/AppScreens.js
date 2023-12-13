@@ -17,7 +17,7 @@ import BookingSuccess from '../Screens/appScreens/BookingSuccess';
 import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 import { useRoute } from '@react-navigation/native';
 import DiagnosisDetails from '../Screens/appScreens/DiagnosisDetails';
-
+import Editprofile from '../Screens/appScreens/Editprofile';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -193,6 +193,18 @@ const AppScreens = () => {
                 <Stack.Screen
                     name="BookingSuccess"
                     component={BookingSuccess}
+                    options={{
+                        headerShown: false,
+                        headerStyle: {
+                            backgroundColor: '#f4511e',
+                        },
+                        headerTintColor: '#fff',
+                        presentation: "modal"
+                    }}
+                />
+                 <Stack.Screen
+                    name="Editprofile"
+                    component={Editprofile}
                     options={{
                         headerShown: false,
                         headerStyle: {

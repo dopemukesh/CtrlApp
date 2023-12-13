@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 
 
 
-const ProfileComponent = ({ name, screen, icon, onLogout }) => {
+const ProfileComponent = ({ name, screen, icon, onLogout, onTapFunc }) => {
     const navigation = useNavigation();
 
     /**
@@ -19,10 +19,13 @@ const ProfileComponent = ({ name, screen, icon, onLogout }) => {
         if (onLogout){
             onLogout();
         }
+        if (onTapFunc){
+            navigation.navigate(onTapFunc);
+        }
     }
 
     return (
-        
+
         <TouchableOpacity onPress={handleSubmit} className="flex flex-row items-center justify-between bg-white p-4 border border-gray-50 rounded-lg">
             <View className="flex flex-row items-center justify-start space-x-4">
                 <Icon name={icon} size={24} color="blue" />
